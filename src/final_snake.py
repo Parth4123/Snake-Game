@@ -17,14 +17,15 @@ game_over_color = ("#0C120C")
 
 
 # length of snake
-Size = 40
+Size = 33
 
 # Food Class
 
 class Food():
     def __init__(self,parent_display):
         self.parent_display = parent_display
-        self.apple_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/apple.png").convert() 
+        self.apple_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/apple.png").convert_alpha()
+        self.apple_image = pg.transform.scale(self.apple_image, (40, 40))
         self.pos_x = Size *3
         self.pos_y = Size *3
         # pg.draw.circle(self.parent_display,snake_color,[self.pos_x[i],self.pos_y[i]],20,20)
@@ -43,7 +44,11 @@ class Food():
 class Snake():
     def __init__(self,parent_display):
         self.parent_display = parent_display
-        self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snake.png")
+        self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakeu.png")
+        self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
+        self.snake_body = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/body.png")
+        self.snake_body = pg.transform.scale(self.snake_body, (40, 40))
+
         self.length = 1
         #snake position:
         self.pos_x = [Size]
@@ -54,9 +59,24 @@ class Snake():
     def draw_body(self):
         # we need display fill to clear previous blocks before moving to new co-ordinate
         self.parent_display.fill(back_gd)
-        for i in range(self.length):
-            # pg.draw.rect(self.parent_display,snake_color,[self.pos_x[i],self.pos_y[i],37,37])
-            self.parent_display.blit(self.snake_image,(self.pos_x[i],self.pos_y[i]))
+        
+        if self.direction_of_snake == "DOWN":
+            self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snaked.png")
+            self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
+        if self.direction_of_snake == "UP":
+            self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakeu.png")
+            self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
+        # if self.direction_of_snake == "LEFT":
+        #     self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakel.png")
+        #     self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
+        # if self.direction_of_snake == "RIGHT":
+        #     self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakedr.png")
+        #     self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
+
+        self.parent_display.blit(self.snake_image,(self.pos_x[0],self.pos_y[0]))
+         
+        for i in range(1, self.length):
+            self.parent_display.blit(self.snake_body,(self.pos_x[i],self.pos_y[i]))
         pg.display.flip()
     
     # Change snake direction
@@ -68,9 +88,13 @@ class Snake():
     
     def move_LEFT(self):
         self.direction_of_snake = "LEFT"
+        self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakel.png")
+        self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
     
     def move_RIGHT(self):
         self.direction_of_snake = "RIGHT"
+        self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snaker.png")
+        self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
 
     def snake_speed(self):
 
@@ -83,6 +107,7 @@ class Snake():
 
         if self.direction_of_snake == 'DOWN':
             self.pos_y[0] += Size
+
         
         if self.direction_of_snake == 'LEFT':
             self.pos_x[0] -= Size
@@ -145,8 +170,8 @@ class snake_game:
 
         # snake eating apple scenario
         if self.is_collision (self.snake.pos_x[0],self.snake.pos_y[0], self.food.pos_x,self.food.pos_y):
-            self.snake.increase_body_length()
             self.food.change_position()
+            self.snake.increase_body_length()
         
         # snake colliding with itself 
         for i in range(3, self.snake.length):
@@ -156,7 +181,7 @@ class snake_game:
     # display score
     def display_score(self):
         font = pg.font.SysFont('arial',30)
-        score = font.render(f"SCORE:{self.snake.length}",True,(255,255,255))
+        score = font.render(f"SCORE:{self.snake.length}",True,(0, 0, 0))
         self.display.blit(score,(850,10))
 
     # game over screen

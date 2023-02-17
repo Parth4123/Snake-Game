@@ -1,8 +1,12 @@
-  # if changed_direction == 'Up' and  direction_of_snake != 'Down':
-        #     direction_of_snake = 'Up'
-        # if changed_direction == 'Down' and direction_of_snake != 'Up':
-        #     direction_of_snake = 'Down'
-        # if changed_direction == 'Left' and direction_of_snake != 'Right':
-        #     direction_of_snake = 'Left'
-        # if changed_direction == 'Right' and direction_of_snake != 'Left':
-        #     direction_of_snake = 'Right'
+if self.direction_of_snake == "DOWN":
+        #     self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snaked.png")
+        #     self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
+        # elif self.direction_of_snake == "UP":
+        #     self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakeu.png")
+        #     self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
+        # elif self.direction_of_snake == "LEFT":
+        #     self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakel.png")
+        #     self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
+        # elif self.direction_of_snake == "RIGHT":
+        #     self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakedr.png")
+        #     self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
