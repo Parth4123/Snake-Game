@@ -200,7 +200,7 @@ class snake_game:
 
         # snake colliding with wall
         if self.snake.pos_x[0] >= 1080 or self.snake.pos_x[0]<0 or self.snake.pos_y[0] >=780 or self.snake.pos_y[0] < 0 :
-            raise "collision OCcurred"
+            raise "collision Occurred"
  
 
     # display score
