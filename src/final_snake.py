@@ -55,6 +55,7 @@ class Snake():
         self.pos_y = [Size]
 
         self.direction_of_snake = "DOWN"
+        self.changed_direction = self.direction_of_snake
 
     def draw_body(self):
         # we need display fill to clear previous blocks before moving to new co-ordinate
@@ -81,20 +82,38 @@ class Snake():
     
     # Change snake direction
     def move_UP(self):
-        self.direction_of_snake = "UP"
+        
+        self.direction_of_snake = 'UP'
     
     def move_DOWN(self):
-        self.direction_of_snake = "DOWN"
-    
+        
+            self.direction_of_snake = "DOWN"    
     def move_LEFT(self):
-        self.direction_of_snake = "LEFT"
-        self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakel.png")
-        self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
+
+            self.direction_of_snake = "LEFT"
+            self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakel.png")
+            self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
+       
     
     def move_RIGHT(self):
-        self.direction_of_snake = "RIGHT"
-        self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snaker.png")
-        self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
+            self.direction_of_snake = "RIGHT"
+            self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snaker.png")
+            self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
+
+    # to check if two keys are pressed simultaneously
+    def check_if_two_keys_pressed(self,changed_direction):
+
+        if changed_direction == 'UP' and  self.direction_of_snake!= 'DOWN':
+            self.move_UP()
+
+        if changed_direction == 'DOWN' and  self.direction_of_snake!= 'UP':
+            self.move_DOWN()
+        
+        if changed_direction == 'LEFT' and  self.direction_of_snake!= 'RIGHT':
+            self.move_LEFT()
+        
+        if changed_direction == 'RIGHT' and self.direction_of_snake!="LEFT":
+            self.move_RIGHT()
 
     def snake_speed(self):
 
@@ -137,6 +156,7 @@ class snake_game:
             self.food = Food(self.display)
             self.food.draw_food() 
     
+    # if snake eats food condition
     def if_collision_of_snake_and_food(self,x1,y1,x2,y2):
         if x1 >= x2 + Size and x1<=x2 + Size:
             if y1 >= y2 + Size and y1<=y2 + Size:
@@ -177,7 +197,12 @@ class snake_game:
         for i in range(3, self.snake.length):
             if self.is_collision(self.snake.pos_x[0],self.snake.pos_y[0], self.snake.pos_x[i],self.snake.pos_y[i]):
                 raise "Collision Occurred"
-    
+
+        # snake colliding with wall
+        if self.snake.pos_x[0] >= 1080 or self.snake.pos_x[0]<0 or self.snake.pos_y[0] >=780 or self.snake.pos_y[0] < 0 :
+            raise "collision OCcurred"
+ 
+
     # display score
     def display_score(self):
         font = pg.font.SysFont('arial',30)
@@ -214,16 +239,25 @@ class snake_game:
                     if not game_pause:
                     
                         if event.key == pg.K_UP or event.key == pg.K_w:
-                            self.snake.move_UP()
+                            
+                            self.snake.changed_direction= "UP"
+                            self.snake.check_if_two_keys_pressed(self.snake.changed_direction)
+                            
 
                         if event.key == pg.K_DOWN or event.key == pg.K_s:
-                            self.snake.move_DOWN()
+                            
+                            self.snake.changed_direction="DOWN"
+                            self.snake.check_if_two_keys_pressed(self.snake.changed_direction)
 
                         if event.key == pg.K_LEFT or event.key == pg.K_a:
-                            self.snake.move_LEFT()
+                            
+                            self.snake.changed_direction = "LEFT"
+                            self.snake.check_if_two_keys_pressed(self.snake.changed_direction)
                         
                         if event.key == pg.K_RIGHT or event.key == pg.K_d:
-                            self.snake.move_RIGHT()
+                            
+                            self.snake.changed_direction ="RIGHT"
+                            self.snake.check_if_two_keys_pressed(self.snake.changed_direction)
 
 
                 elif event.type == QUIT:
@@ -237,7 +271,7 @@ class snake_game:
                 game_pause = True
                 self.reset()
             
-            tm.sleep(.25)
+            tm.sleep(.21)
 
 if __name__ == '__main__':
     game = snake_game()
