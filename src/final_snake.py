@@ -151,14 +151,6 @@ class snake_game:
             self.food.draw_food() 
             self.speed = 0.21
     
-    # # if snake eats food condition
-    # def if_collision_of_snake_and_food(self,x1,y1,x2,y2):
-    #     if x1 >= x2 + Size and x1<=x2 + Size:
-    #         if y1 >= y2 + Size and y1<=y2 + Size:
-    #             return True
-
-    #     return False
-
     # reset game
     def reset(self):
         self.snake = Snake(self.display)
