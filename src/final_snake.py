@@ -51,7 +51,7 @@ class Snake():
 
         self.length = 1
         #snake position:
-        self.pos_x = [Size]
+        self.pos_x = [Size]    
         self.pos_y = [Size]
 
         self.direction_of_snake = "DOWN"
@@ -67,13 +67,7 @@ class Snake():
         if self.direction_of_snake == "UP":
             self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakeu.png")
             self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
-        # if self.direction_of_snake == "LEFT":
-        #     self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakel.png")
-        #     self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
-        # if self.direction_of_snake == "RIGHT":
-        #     self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakedr.png")
-        #     self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
-
+        
         self.parent_display.blit(self.snake_image,(self.pos_x[0],self.pos_y[0]))
          
         for i in range(1, self.length):
@@ -115,14 +109,14 @@ class Snake():
         if changed_direction == 'RIGHT' and self.direction_of_snake!="LEFT":
             self.move_RIGHT()
 
-    def snake_speed(self):
-
+    def snake_change_direction(self):
+       
         for i in range (self.length-1,0,-1):
             self.pos_x[i] = self.pos_x[i-1]
             self.pos_y[i] = self.pos_y[i-1]
 
         if self.direction_of_snake == 'UP':
-            self.pos_y[0] -= Size
+            self.pos_y[0] -= Size 
 
         if self.direction_of_snake == 'DOWN':
             self.pos_y[0] += Size
@@ -149,20 +143,21 @@ class snake_game:
             pg.init()
             pg.display.set_caption("Snake BY Puzzlelists")
 
-            self.display = pg.display.set_mode((1080,720))
+            self.display = pg.display.set_mode((1280,720))
             self.display.fill(back_gd)
             self.snake = Snake(self.display)
             self.snake.draw_body()  
             self.food = Food(self.display)
             self.food.draw_food() 
+            self.speed = 0.21
     
-    # if snake eats food condition
-    def if_collision_of_snake_and_food(self,x1,y1,x2,y2):
-        if x1 >= x2 + Size and x1<=x2 + Size:
-            if y1 >= y2 + Size and y1<=y2 + Size:
-                return True
+    # # if snake eats food condition
+    # def if_collision_of_snake_and_food(self,x1,y1,x2,y2):
+    #     if x1 >= x2 + Size and x1<=x2 + Size:
+    #         if y1 >= y2 + Size and y1<=y2 + Size:
+    #             return True
 
-        return False
+    #     return False
 
     # reset game
     def reset(self):
@@ -180,10 +175,10 @@ class snake_game:
     def render_background(self):
         self.display.fill(back_gd) 
     
-
+    
     def play (self):
         self.render_background()
-        self.snake.snake_speed()
+        self.snake.snake_change_direction()
         self.food.draw_food()
         self.display_score()
         pg.display.flip()
@@ -192,6 +187,7 @@ class snake_game:
         if self.is_collision (self.snake.pos_x[0],self.snake.pos_y[0], self.food.pos_x,self.food.pos_y):
             self.food.change_position()
             self.snake.increase_body_length()
+            self.Increase_speed()
         
         # snake colliding with itself 
         for i in range(3, self.snake.length):
@@ -199,7 +195,7 @@ class snake_game:
                 raise "Collision Occurred"
 
         # snake colliding with wall
-        if self.snake.pos_x[0] >= 1080 or self.snake.pos_x[0]<0 or self.snake.pos_y[0] >=780 or self.snake.pos_y[0] < 0 :
+        if self.snake.pos_x[0] >= 1280 or self.snake.pos_x[0]<0 or self.snake.pos_y[0] >=780 or self.snake.pos_y[0] < 0 :
             raise "collision Occurred"
  
 
@@ -207,7 +203,10 @@ class snake_game:
     def display_score(self):
         font = pg.font.SysFont('arial',30)
         score = font.render(f"SCORE:{self.snake.length}",True,(0, 0, 0))
-        self.display.blit(score,(850,10))
+        self.display.blit(score,(1000
+        
+        
+        ,10))
 
     # game over screen
 
@@ -220,6 +219,10 @@ class snake_game:
         self.display.blit(line2,(200,350))
         pg.display.flip()
 
+    #increase snake speed after eating apple
+    def Increase_speed(self):
+        if self.is_collision:
+            self.speed-=0.009
 
     def run (self):
 
@@ -271,7 +274,7 @@ class snake_game:
                 game_pause = True
                 self.reset()
             
-            tm.sleep(.21)
+            tm.sleep(self.speed)
 
 if __name__ == '__main__':
     game = snake_game()
