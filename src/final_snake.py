@@ -203,10 +203,7 @@ class snake_game:
     def display_score(self):
         font = pg.font.SysFont('arial',30)
         score = font.render(f"SCORE:{self.snake.length}",True,(0, 0, 0))
-        self.display.blit(score,(1000
-        
-        
-        ,10))
+        self.display.blit(score,(1000,10))
 
     # game over screen
 
