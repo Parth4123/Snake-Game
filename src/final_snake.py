@@ -217,7 +217,7 @@ class snake_game:
 
     # display score
     def display_score(self):
-        score = self.main_font.render(f"SCORE:{self.snake.length}",True,(255,255,255))
+        score = self.main_font.render(f"SCORE:{self.snake.length}",True,(0,0,0))
         self.display.blit(score,(1000,10))
 
     # game over screen
@@ -226,13 +226,13 @@ class snake_game:
         self.render_background()
 
         line1 = self.game_over_font.render(
-            f"Game Is Over! Your Score is {self.snake.length}",True,(255,255,255)
+            f"Game Is Over! Your Score is {self.snake.length}",True,(0,0,0)
             )
         self.display.blit(
             line1,(self.display.get_width()/2 - line1.get_width()/2,self.display.get_height() / 2 - line1.get_height() / 2,),
             )
         line2 = self.game_over_font.render(
-            "To play again press Enter. To exit press Esc!",True,(255,255,255)
+            "To play again press Enter. To exit press Esc!",True,(0,0,0)
             )
         self.display.blit(
             line2,(self.display.get_width()/2 - line2.get_width()/2,self.display.get_height() / 2 - line2.get_height()/2 + line1.get_height()*1.3,),
