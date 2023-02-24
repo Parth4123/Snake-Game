@@ -1,6 +1,7 @@
 import pygame as pg
 from pygame.locals import *
 import random as rd 
+import os 
 import time as tm
 
 #  variables for snake eyes
@@ -24,7 +25,9 @@ Size = 33
 class Food():
     def __init__(self,parent_display):
         self.parent_display = parent_display
-        self.apple_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/apple.png").convert_alpha()
+        self.apple_image = pg.image.load( 
+            os.path.join(os.getcwd(),"Puzzlelists/snake/design/apple.png")
+        ).convert_alpha()
         self.apple_image = pg.transform.scale(self.apple_image, (40, 40))
         self.pos_x = Size *3
         self.pos_y = Size *3
@@ -44,9 +47,13 @@ class Food():
 class Snake():
     def __init__(self,parent_display):
         self.parent_display = parent_display
-        self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakeu.png")
+        self.snake_image = pg.image.load(
+            os.path.join(os.getcwd(),"Puzzlelists/snake/design/snakeu.png")
+        )
         self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
-        self.snake_body = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/body.png")
+        self.snake_body = pg.image.load(
+            os.path.join(os.getcwd(),"Puzzlelists/snake/design/body.png")
+        )
         self.snake_body = pg.transform.scale(self.snake_body, (40, 40))
 
         self.length = 1
@@ -59,13 +66,17 @@ class Snake():
 
     def draw_body(self):
         # we need display fill to clear previous blocks before moving to new co-ordinate
-        self.parent_display.fill(back_gd)
+        
         
         if self.direction_of_snake == "DOWN":
-            self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snaked.png")
+            self.snake_image = pg.image.load(
+                os.path.join(os.getcwd(),"Puzzlelists/snake/design/snaked.png")
+                )
             self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
         if self.direction_of_snake == "UP":
-            self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakeu.png")
+            self.snake_image = pg.image.load(
+                os.path.join(os.getcwd(),"Puzzlelists/snake/design/snakeu.png")
+            )
             self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
         
         self.parent_display.blit(self.snake_image,(self.pos_x[0],self.pos_y[0]))
@@ -85,13 +96,17 @@ class Snake():
     def move_LEFT(self):
 
             self.direction_of_snake = "LEFT"
-            self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snakel.png")
+            self.snake_image = pg.image.load(
+                os.path.join(os.getcwd(),"Puzzlelists/snake/design/snakel.png")
+            )
             self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
        
     
     def move_RIGHT(self):
             self.direction_of_snake = "RIGHT"
-            self.snake_image = pg.image.load("/home/parth/python/Python_Projects/Puzzlelists/snake/design/snaker.png")
+            self.snake_image = pg.image.load(
+                os.path.join(os.getcwd(),"Puzzlelists/snake/design/snaker.png")
+            )
             self.snake_image = pg.transform.scale(self.snake_image, (40, 40))
 
     # to check if two keys are pressed simultaneously
@@ -142,15 +157,22 @@ class snake_game:
     def __init__(self):
             pg.init()
             pg.display.set_caption("Snake BY Puzzlelists")
-
             self.display = pg.display.set_mode((1280,720))
-            self.display.fill(back_gd)
+            self.bg_image = pg.image.load (
+                os.path.join(os.getcwd(),"Puzzlelists/snake/design/grass.png")
+            ).convert_alpha()
             self.snake = Snake(self.display)
             self.snake.draw_body()  
             self.food = Food(self.display)
             self.food.draw_food() 
             self.speed = 0.21
-    
+            self.font = pg.font.SysFont("arial",30)
+            self.main_font = pg.font.Font(
+                os.path.join(os.getcwd(),"Puzzlelists/snake/design/fonts","joystix monospace.otf"), 35
+            )
+            self.game_over_font = pg.font.Font(
+                os.path.join(os.getcwd(),"Puzzlelists/snake/design/fonts","joystix monospace.otf"), 25
+            )
 
     # reset game
     def reset(self):
@@ -166,7 +188,8 @@ class snake_game:
     
     #render background
     def render_background(self):
-        self.display.fill(back_gd) 
+        self.display.blit(self.bg_image,(0,0))
+        self.display_score
     
     
     def play (self):
@@ -188,31 +211,38 @@ class snake_game:
                 raise "Collision Occurred"
 
         # snake colliding with wall
-        if self.snake.pos_x[0] >= 1280 or self.snake.pos_x[0]<0 or self.snake.pos_y[0] >=780 or self.snake.pos_y[0] < 0 :
+        if self.snake.pos_x[0] >= 1280 or self.snake.pos_x[0]<0 or self.snake.pos_y[0] >=720 or self.snake.pos_y[0] < 0 :
             raise "collision Occurred"
  
 
     # display score
     def display_score(self):
-        font = pg.font.SysFont('arial',30)
-        score = font.render(f"SCORE:{self.snake.length}",True,(0, 0, 0))
+        score = self.main_font.render(f"SCORE:{self.snake.length}",True,(255,255,255))
         self.display.blit(score,(1000,10))
 
     # game over screen
 
     def game_over_screen(self):
         self.render_background()
-        font = pg.font.SysFont('arial',30)
-        line1 = font.render(f"Game Is Over! Your Score is {self.snake.length}",True,game_over_mssg)
-        self.display.blit(line1,(200,300))
-        line2 = font.render("To play again press Enter. To exit press Esc!",True,game_over_mssg)
-        self.display.blit(line2,(200,350))
+
+        line1 = self.game_over_font.render(
+            f"Game Is Over! Your Score is {self.snake.length}",True,(255,255,255)
+            )
+        self.display.blit(
+            line1,(self.display.get_width()/2 - line1.get_width()/2,self.display.get_height() / 2 - line1.get_height() / 2,),
+            )
+        line2 = self.game_over_font.render(
+            "To play again press Enter. To exit press Esc!",True,(255,255,255)
+            )
+        self.display.blit(
+            line2,(self.display.get_width()/2 - line2.get_width()/2,self.display.get_height() / 2 - line2.get_height()/2 + line1.get_height()*1.3,),
+        )              
         pg.display.flip()
 
     #increase snake speed after eating apple
     def Increase_speed(self):
         if self.is_collision:
-            self.speed-=0.009
+            self.speed-=0.007
 
     def run (self):
 
