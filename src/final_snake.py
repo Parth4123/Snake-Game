@@ -151,6 +151,7 @@ class snake_game:
             self.food.draw_food() 
             self.speed = 0.21
     
+
     # reset game
     def reset(self):
         self.snake = Snake(self.display)
@@ -227,6 +228,7 @@ class snake_game:
                     
                     if event.key == K_RETURN:
                         game_pause = False
+                        self.speed = 0.21
                     
                     if not game_pause:
                     
